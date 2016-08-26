@@ -1,0 +1,4 @@
+type Unit = Unit
+$nop(x) = Unit
+@unit[Unit] = @@unit
+out $nop(@unit)

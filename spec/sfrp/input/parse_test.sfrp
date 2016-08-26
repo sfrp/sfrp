@@ -1,0 +1,17 @@
+import Somewhere.Something as X
+
+ptype Int{int} = /^([0-9]+)$/\1/
+type +Bool{int} = True{1} | False{0}
+
+foreign + as +(Int, Int):Int
+infixl + 7
+
+init PIC.$init(0, 1)
+
+f(x, y) = let t = (p, p) where p = (x, y)
+              i = 100
+          in (t, i)
+
+in @pin[False] from $pin(0)
+@acc[0] = @@acc + 1
+out $world(@pin, @acc)

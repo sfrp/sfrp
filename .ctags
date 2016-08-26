@@ -1,0 +1,3 @@
+--langmap=RUBY:.rb
+--exclude=coverage
+--recurse=yes

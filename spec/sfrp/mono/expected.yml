@@ -1,0 +1,316 @@
+includes: []
+
+macros: []
+
+typedefs:
+  - typedef struct MaybeInt* MaybeInt;
+  - typedef struct Pair* Pair;
+  - typedef struct X* X;
+  - typedef struct XX* XX;
+  - typedef struct STupleIntInt STupleIntInt;
+
+structs:
+  - >
+    struct MaybeInt {
+      struct {
+        unsigned char term_id : 7;
+        unsigned char mark : 1;
+      } meta;
+      union {
+        struct {
+          int member0;
+        } term0;
+        struct {
+        } term1;
+      } terms;
+    };
+
+  - >
+    struct Pair {
+      struct {
+        unsigned char term_id : 7;
+        unsigned char mark : 1;
+      } meta;
+      union {
+        struct {
+          int member0;
+          int member1;
+        } term0;
+      } terms;
+    };
+
+  - >
+    struct X {
+      struct {
+        unsigned char term_id : 7;
+        unsigned char mark : 1;
+      } meta;
+      union {
+        struct {
+          MaybeInt member0;
+        } term0;
+        struct {
+          MaybeInt member0;
+          MaybeInt member1;
+        } term1;
+      } terms;
+    };
+
+  - >
+    struct XX {
+      struct {
+        unsigned char term_id : 7;
+        unsigned char mark : 1;
+      } meta;
+      union {
+        struct {
+          MaybeInt member0;
+        } term0;
+      } terms;
+    };
+
+  - >
+    struct STupleIntInt {
+      union {
+        struct {
+          int member0;
+          int member1;
+        } term0;
+      } terms;
+    };
+
+proto_functions:
+  - int id(int);
+  - MaybeInt initialMaybeInt();
+  - Pair toPair(MaybeInt);
+  - X swap(X);
+  - MaybeInt VC_JustInt(int);
+  - MaybeInt VC_NothingInt();
+  - MaybeInt alloc_MaybeInt(int);
+  - int mark_MaybeInt(MaybeInt);
+  - Pair VC_Pair(int, int);
+  - Pair alloc_Pair(int);
+  - int mark_Pair(Pair);
+  - X VC_X1(MaybeInt);
+  - X VC_X2(MaybeInt, MaybeInt);
+  - X alloc_X(int);
+  - int mark_X(X);
+  - XX VC_XX(MaybeInt);
+  - XX alloc_XX(int);
+  - int mark_XX(XX);
+  - STupleIntInt VC_STupleIntInt(int, int);
+  - int main();
+
+functions:
+  # Normal functions
+  - >
+    int id(int x) {
+      return x;
+    }
+
+  - >
+    MaybeInt initialMaybeInt() {
+      return VC_JustInt(1);
+    }
+
+  - >
+    Pair toPair(MaybeInt arg) {
+      Pair _v00;
+      int x;
+      MaybeInt hoge;
+      Pair _v01;
+      return _v00 = arg, (_v00->meta.term_id == 0) ? (x = (_v00->terms.term0.member0), VC_Pair(x, x)) : (_v00->meta.term_id == 1) ? (hoge = (_v00), VC_Pair(id((0)), id((0)))) : ((_v01 = alloc_Pair(0), ffi_pair((&_v01->terms.term0.member0), (&_v01->terms.term0.member1)), _v01));
+    }
+
+  - >
+    X swap(X arg) {
+      X _v00;
+      MaybeInt x;
+      MaybeInt y;
+      return _v00 = arg, (x = (_v00->terms.term1.member0), y = (_v00->terms.term1.member1), VC_X2(y, x));
+    }
+
+  # Type MaybeInt
+  - >
+    MaybeInt VC_JustInt(int member0) {
+      MaybeInt x = alloc_MaybeInt(0);
+      x->meta.term_id = 0;
+      x->terms.term0.member0 = member0;
+      return x;
+    }
+
+  - >
+    MaybeInt VC_NothingInt() {
+      MaybeInt x = alloc_MaybeInt(0);
+      x->meta.term_id = 1;
+      return x;
+    }
+
+  - >
+    MaybeInt alloc_MaybeInt(int clean_up) {
+      static int i = 0;
+      static struct MaybeInt memory_MaybeInt[2];
+      if (clean_up) {
+        while (i < 2) {
+          memory_MaybeInt[i++].meta.mark = 0;
+        }
+        i = 0;
+        return 0;
+      }
+      while (memory_MaybeInt[i].meta.mark) {
+        memory_MaybeInt[i].meta.mark = 0;
+        i = (i + 1) % 2;
+      }
+      return memory_MaybeInt + i;
+    }
+
+  - >
+    int mark_MaybeInt(MaybeInt target) {
+      target->meta.mark = 1;
+      return 0;
+    }
+
+  # Type Pair
+  - >
+    Pair VC_Pair(int member0, int member1) {
+      Pair x = alloc_Pair(0);
+      x->meta.term_id = 0;
+      x->terms.term0.member0 = member0;
+      x->terms.term0.member1 = member1;
+      return x;
+    }
+
+  - >
+    Pair alloc_Pair(int clean_up) {
+      static int i = 0;
+      static struct Pair memory_Pair[3];
+      if (clean_up) {
+        while (i < 3) {
+          memory_Pair[i++].meta.mark = 0;
+        }
+        i = 0;
+        return 0;
+      }
+      while (memory_Pair[i].meta.mark) {
+        memory_Pair[i].meta.mark = 0;
+        i = (i + 1) % 3;
+      }
+      return memory_Pair + i;
+    }
+
+  - >
+    int mark_Pair(Pair target) {
+      target->meta.mark = 1;
+      return 0;
+    }
+
+  # Type X
+  - >
+    X VC_X1(MaybeInt member0) {
+      X x = alloc_X(0);
+      x->meta.term_id = 0;
+      x->terms.term0.member0 = member0;
+      return x;
+    }
+
+  - >
+    X VC_X2(MaybeInt member0, MaybeInt member1) {
+      X x = alloc_X(0);
+      x->meta.term_id = 1;
+      x->terms.term1.member0 = member0;
+      x->terms.term1.member1 = member1;
+      return x;
+    }
+
+  - >
+    X alloc_X(int clean_up) {
+      static int i = 0;
+      static struct X memory_X[0];
+      if (clean_up) {
+        while (i < 0) {
+          memory_X[i++].meta.mark = 0;
+        }
+        i = 0;
+        return 0;
+      }
+      while (memory_X[i].meta.mark) {
+        memory_X[i].meta.mark = 0;
+        i = (i + 1) % 0;
+      }
+      return memory_X + i;
+    }
+
+  - >
+    int mark_X(X target) {
+      target->meta.mark = 1;
+      if (target->meta.term_id == 0) {
+        mark_MaybeInt(target->terms.term0.member0);
+      }
+      if (target->meta.term_id == 1) {
+        mark_MaybeInt(target->terms.term1.member0), mark_MaybeInt(target->terms.term1.member1);
+      }
+      return 0;
+    }
+
+  # Type XX
+  - >
+    XX VC_XX(MaybeInt member0) {
+      XX x = alloc_XX(0);
+      x->meta.term_id = 0;
+      x->terms.term0.member0 = member0;
+      return x;
+    }
+
+  - >
+    XX alloc_XX(int clean_up) {
+      static int i = 0;
+      static struct XX memory_XX[0];
+      if (clean_up) {
+        while (i < 0) {
+          memory_XX[i++].meta.mark = 0;
+        }
+        i = 0;
+        return 0;
+      }
+      while (memory_XX[i].meta.mark) {
+        memory_XX[i].meta.mark = 0;
+        i = (i + 1) % 0;
+      }
+      return memory_XX + i;
+    }
+
+  - >
+    int mark_XX(XX target) {
+      target->meta.mark = 1;
+      mark_MaybeInt(target->terms.term0.member0);
+      return 0;
+    }
+
+  # Type STupleIntInt
+  - >
+    STupleIntInt VC_STupleIntInt(int member0, int member1) {
+      STupleIntInt x;
+      x.terms.term0.member0 = member0;
+      x.terms.term0.member1 = member1;
+      return x;
+    }
+
+  # Main functions
+  - >
+    int main() {
+      int c = 0, l = 1;
+      MaybeInt bufNode[2];
+      Pair node1[1];
+      init_system();
+      bufNode[l] = initialMaybeInt();
+      while (1) {
+        alloc_MaybeInt(1);
+        alloc_Pair(1);
+        alloc_Int(1);
+        mark_MaybeInt(bufNode[l]);
+        bufNode[c] = get_maybe_int();
+        node1[0] = toPair((bufNode[c]), (bufNode[l]));
+        c ^= 1, l ^= 1;
+      }
+      return 0;
+    }
