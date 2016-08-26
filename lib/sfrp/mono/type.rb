@@ -113,6 +113,7 @@ module SFRP
 
       # Generate statement to clean up objects of this types.
       def gen_mark_cleanup_stmt(src_set, stmts)
+        return unless need_mark?(src_set)
         return if src_set.memory(@str) == 0
         stmts << L.stmt("#{low_allocator_str}(1)")
       end
