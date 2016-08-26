@@ -177,7 +177,8 @@ module SFRP
           # controling
           if_exp | let_exp | match_exp |
           # calling
-          func_call_exp | vc_call_exp_with_paren | vc_call_exp_without_paren |
+          func_call_exp | io_func_call_exp |
+          vc_call_exp_with_paren | vc_call_exp_without_paren |
           tuple_exp |
           # reference
           node_last_ref_exp | node_current_ref_exp | var_ref_exp |
