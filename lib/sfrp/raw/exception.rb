@@ -9,7 +9,7 @@ module SFRP
       end
 
       def message
-        @target_str
+        "Cannot resolve '#{@target_str}'"
       end
     end
 
@@ -21,7 +21,8 @@ module SFRP
       end
 
       def message
-        @target_str
+        "Ambiguous name '#{@target_str}':\n" +
+        @selection_strs.map { |s| '  ' + s }.join("\n")
       end
     end
 
@@ -32,7 +33,7 @@ module SFRP
       end
 
       def message
-        @target_str
+        "Don't call side-effect function '#{@target_str}'"
       end
     end
   end

@@ -1,3 +1,4 @@
+require 'sfrp/input/exception'
 require 'parslet'
 
 module SFRP
@@ -23,6 +24,8 @@ module SFRP
           a.vconsts.each { |b| b.ns = ns } if a.is_a?(Raw::TConst)
         end
         others
+      rescue Parslet::ParseFailed => err
+        raise ParseError.new(err.message)
       end
 
       class Parser < Parslet::Parser
