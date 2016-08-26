@@ -1,4 +1,10 @@
 require 'sfrp/input/set'
+require 'sfrp/raw/set'
+require 'sfrp/flat/set'
+require 'sfrp/poly/set'
+require 'sfrp/mono/set'
+require 'sfrp/low/set'
+require 'sfrp/output/set'
 require 'sfrp/error'
 require 'sfrp/file'
 
@@ -41,7 +47,7 @@ module SFRP
       content = File.read(to_full_path(fmodule_uri))
       content.each_line.each_with_object([fmodule_uri]) do |line, ary|
         line.match(/import ([A-Z][a-zA-Z0-9]+(\.[A-Z][a-zA-Z0-9]+)*)/) do |m|
-          ary.concat(collect_fmodule_uris(m[0], visited))
+          ary.concat(collect_fmodule_uris(m[1], visited))
         end
       end
     end
