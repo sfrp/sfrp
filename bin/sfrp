@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+
+require 'sfrp/compiler'
+
+begin
+  SFRP::Compiler.new(ARGV[0] || 'Main', ['.']).compile('output')
+rescue SFRP::CompileError => cerr
+  puts cerr.message
+end
