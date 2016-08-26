@@ -1,8 +1,10 @@
+require 'sfrp/error'
+
 module SFRP
   VirtualFile = Struct.new(:fmodule_uri, :file_ext, :content)
   SourceFile = Struct.new(:fmodule_uri, :content)
 
-  class FileResolveError < StandardError
+  class FileResolveError < CompileError
     def initialize(fmodule_uri, include_paths)
       @fmodule_uri = fmodule_uri
       @include_paths = include_paths

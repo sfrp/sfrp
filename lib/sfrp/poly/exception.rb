@@ -1,6 +1,8 @@
+require 'sfrp/error'
+
 module SFRP
   module Poly
-    class UndeterminableTypeError < StandardError
+    class UndeterminableTypeError < CompileError
       def initialize(identifier, typing)
         @identifier = identifier
         @typing = typing
@@ -11,7 +13,7 @@ module SFRP
       end
     end
 
-    class UnifyError < StandardError
+    class UnifyError < CompileError
       def initialize(typing1, typing2)
         @typing1 = typing1
         @typing2 = typing2

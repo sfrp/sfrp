@@ -1,4 +1,5 @@
 require 'sfrp/input/set'
+require 'sfrp/error'
 require 'sfrp/file'
 
 module SFRP
