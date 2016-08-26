@@ -34,6 +34,12 @@ module SFRP
         @native_str
       end
 
+      # Does this type has single vconst of native type parameters
+      # e.g. Tuple3(Int, Int, Int)
+      def linear?(set)
+        single_vconst? && set.vconst(@vconst_strs[0]).native_args?(set)
+      end
+
       # Does this type has only one vconst?
       def single_vconst?
         !infinite? && @vconst_strs.size == 1

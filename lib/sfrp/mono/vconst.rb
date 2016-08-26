@@ -30,6 +30,10 @@ module SFRP
         @native_str
       end
 
+      def native_args?(set)
+        @arg_type_strs.all? { |s| set.type(s).native? }
+      end
+
       # Generate a struct-element of term for this vconst.
       def gen_term_definition(set, term_id, terms)
         return if native?

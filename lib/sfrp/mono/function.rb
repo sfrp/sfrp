@@ -1,3 +1,5 @@
+require 'sfrp/mono/exception'
+
 module SFRP
   module Mono
     class Function
@@ -40,11 +42,16 @@ module SFRP
       def low_call_exp_in_exp(set, env, low_arg_exps)
         if @ffi_str
           type = set.type(@ftype.return_type_str)
-          return L.call_exp(@ffi_str, low_arg_exps) unless type.single_vconst?
-          var = env.new_var(@ftype.return_type_str)
-          pointers = type.low_member_pointers_for_single_vconst(set, var)
-          call_exp = L.call_exp(@ffi_str, low_arg_exps + pointers)
-          return "(#{var} = #{type.low_allocator_str}(0), #{call_exp}, #{var})"
+          if type.native?
+            return L.call_exp(@ffi_str, low_arg_exps)
+          end
+          if type.linear?(set)
+            var = env.new_var(@ftype.return_type_str)
+            pointers = type.low_member_pointers_for_single_vconst(set, var)
+            call_exp = L.call_exp(@ffi_str, low_arg_exps + pointers)
+            return "(#{var} = #{type.low_allocator_str}(0), #{call_exp}, #{var})"
+          end
+          raise InvalidTypeOfFFIError.new(@ffi_str)
         end
         L.call_exp(@str, low_arg_exps)
       end
