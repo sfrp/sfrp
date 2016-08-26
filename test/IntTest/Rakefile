@@ -1,0 +1,22 @@
+inputs = ['1', '2', '3']
+outputs = [0, *inputs].each_cons(2).map do |a, b|
+  (Integer(a) * 1 + Integer(b) * 2).to_s
+end
+
+def assert(x, y)
+  raise "assert(#{x}, #{y})" unless x == y
+  x
+end
+
+task :default do
+  sh 'bundle exec ../../bin/sfrp IntTest'
+  sh 'gcc output/main.c output/Lib.c'
+  IO.popen('./a.out', 'r+') do |io|
+    inputs.each { |i| io.puts(i) }
+    io.close_write
+    outputs.each do |o|
+      assert(io.gets.chomp, o)
+    end
+  end
+  sh 'rm -fr ./output ./a.out'
+end
