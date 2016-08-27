@@ -7,4 +7,5 @@ begin
   SFRP::Compiler.new(ARGV[0] || 'Main', ['.']).compile('output')
 rescue SFRP::CompileError => cerr
   puts cerr.message
+  exit(1)
 end
