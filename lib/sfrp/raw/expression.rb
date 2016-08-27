@@ -44,7 +44,7 @@ module SFRP
 
       def to_flat(set, ns)
         ab_node_name = set.node(ns, node_ref, sp).absolute_name
-        Flat::NodeRefExp.new(ab_node_name, sp)
+        Flat::NodeRefExp.new(ab_node_name, last)
       end
     end
 
