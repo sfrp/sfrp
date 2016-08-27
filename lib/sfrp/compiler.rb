@@ -37,6 +37,13 @@ module SFRP
     def compile(output_dir_path)
       virtual_files = collect_virtual_files(@main_fmodule_uri)
       make_output_set.generate!(output_dir_path, virtual_files)
+      output_file_names
+    end
+
+    def output_file_names
+      ['main'] + collect_virtual_files(@main_fmodule_uri).flat_map do |vf|
+        vf.file_ext == 'c' ? [vf.fmodule_uri.gsub('.', '/')] : []
+      end
     end
 
     private
