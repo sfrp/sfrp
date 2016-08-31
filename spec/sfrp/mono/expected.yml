@@ -306,7 +306,6 @@ functions:
       while (1) {
         alloc_MaybeInt(1);
         alloc_Pair(1);
-        alloc_Int(1);
         mark_MaybeInt(bufNode[l]);
         bufNode[c] = get_maybe_int();
         node1[0] = toPair((bufNode[c]), (bufNode[l]));
