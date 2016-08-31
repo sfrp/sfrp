@@ -57,7 +57,7 @@ module SFRP
         end
 
         def to_flat(set, ns)
-          flat_args = args.map { |a| a.to_poly(set, ns) }
+          flat_args = args.map { |a| a.to_flat(set, ns) }
           if vconst_ref
             ab_vc_name = set.vconst(ns, vconst_ref, sp).absolute_name
             Flat::MatchExp::Pattern.new(ab_vc_name, ref_var_str, flat_args, sp)
@@ -81,7 +81,7 @@ module SFRP
           flat_pattern = c.pattern.to_flat(set, ns)
           Flat::MatchExp::Case.new(flat_pattern, c.exp.to_flat(set, ns))
         end
-        Flat::MatchExp.new(left_exp.to_poly(set, ns), flat_cases, sp)
+        Flat::MatchExp.new(left_exp.to_flat(set, ns), flat_cases, sp)
       end
     end
 

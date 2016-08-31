@@ -1,0 +1,15 @@
+DIRS = Dir.glob('**').select { |f| File.directory?(f) }
+
+desc 'test all'
+task :default => DIRS
+
+DIRS.each do |d|
+  desc "test #{d}"
+  task d do
+    cd d do
+      sh "bundle exec ../../bin/sfrp Main --show-files | xargs cc -o Main"
+      sh './Main < in.txt | diff -y out.txt -'
+      sh 'rm -fr ./output ./Main'
+    end
+  end
+end

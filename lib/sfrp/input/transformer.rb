@@ -167,6 +167,9 @@ module SFRP
       rule(:vc_pattern_with_paren => subtree(:x)) {
         Raw::MatchExp::Pattern.new(x[:vconst_ref], x[:var_ref], x[:args])
       }
+      rule(:vc_pattern_without_paren => subtree(:x)) {
+        Raw::MatchExp::Pattern.new(x[:vconst_ref], x[:var_ref], [])
+      }
       rule(:tuple_pattern => subtree(:x)) {
         vconst_ref = Raw::Ref.new("Tuple#{x[:args].size}")
         Raw::MatchExp::Pattern.new(vconst_ref, x[:var_ref], x[:args])

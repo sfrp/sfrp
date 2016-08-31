@@ -139,9 +139,11 @@ module SFRP
     end
 
     it 'has functions' do
-      expect(lset.functions.map(&:to_s)).to contain_exactly(
-        *expected['functions'].map(&:chomp)
-      )
+      expected_functions = expected['functions'].map(&:chomp).sort
+      actual_functions = lset.functions.map(&:to_s).sort
+      actual_functions.zip(expected_functions) do |a, e|
+        expect(a).to eql e
+      end
     end
   end
 end

@@ -57,7 +57,7 @@ module SFRP
 
       def to_poly
         poly_cases = cases.map do |c|
-          Poly::Case.new(c.pattern.to_poly, c.exp.to_poly)
+          Poly::MatchExp::Case.new(c.pattern.to_poly, c.exp.to_poly)
         end
         Poly::MatchExp.new(left_exp.to_poly, poly_cases)
       end

@@ -1,0 +1,6 @@
+ptype Int{int} = /^([0-9]+)$/\1/
+type +Bool{int} = True{1} | False{0}
+type +Unit{int} = Unit{0}
+
+infixl + 6
+foreign add as +(Int, Int) : Int

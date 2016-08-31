@@ -1,6 +1,8 @@
 module SFRP
   module Mono
     class Exp
+      attr_reader :type_str
+
       def ==(other)
         comp == other.comp
       end
@@ -22,7 +24,7 @@ module SFRP
 
       # Note that the expression this returns is not wrapped by ().
       def to_low(set, env)
-        tmp_var_str = env.new_var(@type_str)
+        tmp_var_str = env.new_var(@left_exp.type_str)
         left_let_exp = "#{tmp_var_str} = #{@left_exp.to_low(set, env)}"
         case_exp = L.if_chain_exp do |i|
           @cases.each do |c|
@@ -37,9 +39,8 @@ module SFRP
       end
 
       def memory(set)
-        @cases.reduce(@left_exp.memory(set)) do |memory, c|
-          memory.and(c.exp.memory(set))
-        end
+        m = @cases.map { |c| c.exp.memory(set) }.reduce { |a, b| a.or(b) }
+        @left_exp.memory(set).and(m)
       end
     end
 

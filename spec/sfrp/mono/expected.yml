@@ -115,7 +115,7 @@ functions:
 
   - >
     Pair toPair(MaybeInt arg) {
-      Pair _v00;
+      MaybeInt _v00;
       int x;
       MaybeInt hoge;
       Pair _v01;
@@ -183,9 +183,9 @@ functions:
   - >
     Pair alloc_Pair(int clean_up) {
       static int i = 0;
-      static struct Pair memory_Pair[3];
+      static struct Pair memory_Pair[1];
       if (clean_up) {
-        while (i < 3) {
+        while (i < 1) {
           memory_Pair[i++].meta.mark = 0;
         }
         i = 0;
@@ -193,7 +193,7 @@ functions:
       }
       while (memory_Pair[i].meta.mark) {
         memory_Pair[i].meta.mark = 0;
-        i = (i + 1) % 3;
+        i = (i + 1) % 1;
       }
       return memory_Pair + i;
     }

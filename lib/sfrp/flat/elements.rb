@@ -1,6 +1,7 @@
 module SFRP
   module Flat
     class Function < Struct.new(:str, :ret_ta, :pstrs, :ptas, :exp, :ffi_str, :sp)
+      require 'tapp'
       def to_poly(_src_set, dest_set)
         dest_set << P.func(str, ret_ta && ret_ta.to_poly) do |f|
           pstrs.zip(ptas) do |s, ta|
@@ -61,7 +62,7 @@ module SFRP
 
     class TypeAnnotationType < Struct.new(:tconst_str, :arg_tas, :sp)
       def to_poly
-        P.t(tconst_str, *arg_tas)
+        P.t(tconst_str, *arg_tas.map(&:to_poly))
       end
     end
 
