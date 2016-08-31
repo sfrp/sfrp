@@ -2,6 +2,7 @@ import Somewhere.Something as X
 
 ptype Int{int} = /^([0-9]+)$/\1/
 type +Bool{int} = True{1} | False{0}
+type Maybe[a] = Just(a) | Nothing
 
 foreign + as +(Int, Int):Int
 infixl + 7

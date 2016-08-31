@@ -75,7 +75,7 @@ module SFRP
           (up_ident.as(:vconst_name) >> (ws? >> foreign_str.as(:c_value_str))
           .maybe.as(:c_value_str_maybe) >>
           (ws_inline? >> str('(') >> ws? >> listing0(type_annot, ws? >>
-          str(',') >> ws?).as(:type_annots))
+          str(',') >> ws?).as(:type_annots) >> ws? >> str(')'))
           .maybe.as(:type_annots_maybe)).as(:vconst_def)
         }
         rule(:foreign_func_def) {
@@ -322,8 +322,8 @@ module SFRP
           usable_chars = "!#%&*+./<=>?\\^|-~".chars
           usable_chars.map { |c| str(c) }.reduce { |x, y| x | y }.repeat(1)
         }
-        rule(:low_ident) { match['a-z'] >> match['a-zA-Z0-9'].repeat }
-        rule(:up_ident) { match['A-Z'] >> match['a-zA-Z0-9'].repeat }
+        rule(:low_ident) { match['a-z_'] >> match['a-zA-Z0-9_'].repeat }
+        rule(:up_ident) { match['A-Z'] >> match['a-zA-Z0-9_'].repeat }
         rule(:ws) { (str("\s") | str("\n")).repeat(1) }
         rule(:ws?) { ws.maybe }
         rule(:ws_inline) { str("\s").repeat(1) }
