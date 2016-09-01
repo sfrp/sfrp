@@ -9,6 +9,7 @@ module SFRP
     class Set
       def initialize(&block)
         @infixies = []
+        @inits = []
         @prim_tconsts = []
         @output_node_strs = []
         @vconst_h = {}
@@ -24,6 +25,7 @@ module SFRP
           [
             @func_h, @tconst_h, @vconst_h, @node_h
           ].flat_map(&:values).each { |e| e.gen_flat(self, dest_set) }
+          @inits.each { |i| i.gen_flat(self, dest_set) }
           @output_node_strs.each { |s| dest_set.append_output_node_str(s) }
         end
       end
@@ -47,6 +49,8 @@ module SFRP
           self << element.convert
         when Infix
           @infixies << element
+        when Init
+          @inits << element
         else
           raise
         end
