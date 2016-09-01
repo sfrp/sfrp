@@ -175,7 +175,7 @@ module SFRP
         }
         rule(:single_exp) {
           # controling
-          if_exp | let_exp | match_exp |
+          if_exp | let_exp | match_exp | unary_op_exp |
           # calling
           func_call_exp | io_func_call_exp |
           vc_call_exp_with_paren | vc_call_exp_without_paren |
@@ -260,6 +260,12 @@ module SFRP
           ).as(:match_case)
         }
 
+        # unary op exp
+        rule(:unary_op_exp) {
+          (op_ref.as(:func_ref) >> ws? >> single_exp.as(:exp))
+          .as(:unary_op_exp)
+        }
+
         # pattern
         rule(:pattern) {
           vc_pattern_with_paren | vc_pattern_without_paren |
@@ -319,7 +325,7 @@ module SFRP
 
         rule(:num_ident) { match['0-9'] >> match['a-zA-Z0-9'].repeat }
         rule(:op_ident) {
-          usable_chars = "!#%&*+./<=>?\\^|-~".chars
+          usable_chars = "!#%&*+./<=>?\\^|-~'".chars
           usable_chars.map { |c| str(c) }.reduce { |x, y| x | y }.repeat(1)
         }
         rule(:low_ident) { match['a-z_'] >> match['a-zA-Z0-9_'].repeat }

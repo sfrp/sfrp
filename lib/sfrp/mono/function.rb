@@ -42,6 +42,15 @@ module SFRP
       def low_call_exp_in_exp(set, env, low_arg_exps)
         if @ffi_str
           type = set.type(@ftype.return_type_str)
+          if @ffi_str !~ /[a-zA-Z]/
+            if low_arg_exps.size == 2
+              return "(#{low_arg_exps[0]}) #{@ffi_str} (#{low_arg_exps[1]})"
+            end
+            if low_arg_exps.size == 1
+              return "#{@ffi_str} (#{low_arg_exps[0]})"
+            end
+            raise InvalidTypeOfForeignFunctionError.new(@ffi_str)
+          end
           if type.native?
             return L.call_exp(@ffi_str, low_arg_exps)
           end
@@ -51,7 +60,7 @@ module SFRP
             call_exp = L.call_exp(@ffi_str, low_arg_exps + pointers)
             return "(#{var} = #{type.low_allocator_str}(0), #{call_exp}, #{var})"
           end
-          raise InvalidTypeOfFFIError.new(@ffi_str)
+          raise InvalidTypeOfForeignFunctionError.new(@ffi_str)
         end
         L.call_exp(@str, low_arg_exps)
       end

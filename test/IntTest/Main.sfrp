@@ -1,5 +1,5 @@
 import Lib
 
 in @input[0] from $getInt()
-@x : Int = @@input * 1 + @input * 2
+@x : Int = - (@@input * 1 + @input * 2)
 out $putInt(@x)

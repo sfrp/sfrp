@@ -160,6 +160,14 @@ module SFRP
         Raw::MatchExp::Case.new(x[:pattern], x[:exp])
       }
 
+      # unary op exp
+      rule(:unary_op_exp => subtree(:x)) {
+        func_ref = Raw::Ref.new(
+          "'" + x[:func_ref].relative_name, x[:func_ref].qualifier_name
+        )
+        Raw::FuncCallExp.new(func_ref, [x[:exp]], false)
+      }
+
       # pattern
       rule(:any_pattern => simple(:x)) {
         Raw::MatchExp::Pattern.new(nil, x.to_s, [])

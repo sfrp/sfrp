@@ -2,7 +2,7 @@ require 'sfrp/error'
 
 module SFRP
   module Mono
-    class InvalidTypeOfFFIError < CompileError
+    class InvalidTypeOfForeignFunctionError < CompileError
       def initialize(ffi_str)
         @ffi_str = ffi_str
       end

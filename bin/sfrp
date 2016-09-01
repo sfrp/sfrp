@@ -19,3 +19,21 @@ rescue SFRP::CompileError => cerr
   STDERR.puts cerr.message
   exit(1)
 end
+
+
+class CompileCommand
+  def initialize(
+    main_file: 'Main', out_dir: './output', show_files: false,
+    include_paths: []
+  )
+    @main_file = main_file.gsub(/\.sfrp$/, '')
+    @out_dir = out_dir.gsub(/\/$/, '')
+    @show_files = show_files
+    @include_paths = ['.'] + include_paths
+  end
+
+  def exec
+    outs = Compiler.new(@main_file, @include_paths).compile(@out_dir)
+    outs.each { |o| puts @out_dir + '/' + o + '.c' } if @show_files
+  end
+end

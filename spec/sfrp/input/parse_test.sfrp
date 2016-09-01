@@ -7,6 +7,8 @@ type Maybe[a] = Just(a) | Nothing
 foreign + as +(Int, Int):Int
 infixl + 7
 
+foreign - as '-(Int) : Int
+
 init PIC.$init(0, 1)
 
 f(x, y) = let t = (p, p) where p = (x, y)
@@ -14,5 +16,5 @@ f(x, y) = let t = (p, p) where p = (x, y)
           in (t, i)
 
 in @pin[False] from $pin(0)
-@acc[0] = @@acc + 1
+@acc[0] = @@acc + - - 1
 out $world(@pin, @acc)

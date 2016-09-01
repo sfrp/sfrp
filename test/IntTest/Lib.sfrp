@@ -5,8 +5,9 @@ type +Unit{int} = Unit{0}
 infixl + 6
 infixl * 7
 
-foreign add as +(Int, Int) : Int
-foreign mul as *(Int, Int) : Int
+foreign + as +(Int, Int) : Int
+foreign * as *(Int, Int) : Int
+foreign - as '-(Int) : Int
 
 foreign getInt as $getInt() : Int
 foreign putInt as $putInt(Int) : Unit
