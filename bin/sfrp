@@ -1,39 +1,5 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
-require 'sfrp/compiler'
-require 'optparse'
-
-opt_parser = OptionParser.new do |op|
-  op.on('--show-files', 'print the file name of .c files in output directory') do
-    @out = true
-  end
-end
-
-args = opt_parser.parse(ARGV)
-
-begin
-  files = SFRP::Compiler.new(args[0] || 'Main', ['.']).compile('output')
-  files.each { |s| puts 'output/' + s + '.c' } if @out
-rescue SFRP::CompileError => cerr
-  STDERR.puts cerr.message
-  exit(1)
-end
-
-
-class CompileCommand
-  def initialize(
-    main_file: 'Main', out_dir: './output', show_files: false,
-    include_paths: []
-  )
-    @main_file = main_file.gsub(/\.sfrp$/, '')
-    @out_dir = out_dir.gsub(/\/$/, '')
-    @show_files = show_files
-    @include_paths = ['.'] + include_paths
-  end
-
-  def exec
-    outs = Compiler.new(@main_file, @include_paths).compile(@out_dir)
-    outs.each { |o| puts @out_dir + '/' + o + '.c' } if @show_files
-  end
-end
+require 'sfrp/command'
+SFRP::Command.from_argv(ARGV).run
