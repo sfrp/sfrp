@@ -3,7 +3,7 @@ require 'optparse'
 
 module SFRP
   class Command < Struct.new(:main_file, :out_dir, :show_files, :include_paths)
-    def self.from_argv(argv)
+    def self.from_argv(argv, env)
       option = { :include_paths => [] }
       opt_parser = OptionParser.new do |parse|
         desc = 'show paths of the .c file'
@@ -20,6 +20,9 @@ module SFRP
         end
       end
       rest_args = opt_parser.parse(argv)
+      if env['SFRP_INCLUDE']
+        option[:include_paths] += env['SFRP_INCLUDE'].split(':')
+      end
       if rest_args.size > 1
         STDERR.puts 'invalid target specification'
         exit(1)

@@ -2,4 +2,4 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
 require 'sfrp/command'
-SFRP::Command.from_argv(ARGV).run
+SFRP::Command.from_argv(ARGV, ENV).run
