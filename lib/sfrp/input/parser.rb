@@ -323,10 +323,11 @@ module SFRP
           (up_ident.as(:str) >> str('.')).maybe.as(:qualifier)
         }
 
-        rule(:num_ident) { match['0-9'] >> match['a-zA-Z0-9'].repeat }
+        rule(:num_ident) { match['0-9'] >> match['a-zA-Z0-9.'].repeat }
         rule(:op_ident) {
-          usable_chars = "!#%&*+./<=>?\\^|-~'".chars
-          usable_chars.map { |c| str(c) }.reduce { |x, y| x | y }.repeat(1)
+          head_char = "!#%&*+/<=>?\\^|-~'".chars.map { |c| str(c) }.reduce(&:|)
+          tail_char = "!#%&*+./<=>?\\^|-~'".chars.map { |c| str(c) }.reduce(&:|)
+          head_char >> tail_char.repeat
         }
         rule(:low_ident) { match['a-z_'] >> match['a-zA-Z0-9_'].repeat }
         rule(:up_ident) { match['A-Z'] >> match['a-zA-Z0-9_'].repeat }
