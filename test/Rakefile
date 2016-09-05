@@ -7,9 +7,9 @@ DIRS.each do |d|
   desc "test #{d}"
   task d do
     cd d do
-      sh "bundle exec ../../bin/sfrp Main --show-files | xargs cc -o Main"
+      sh "bundle exec ../../bin/sfrp --build=cc --out=compiled"
       sh './Main < in.txt | diff -y out.txt -'
-      sh 'rm -fr ./output ./Main'
+      sh 'rm -fr ./compiled ./Main'
     end
   end
 end

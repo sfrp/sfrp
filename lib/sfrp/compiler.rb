@@ -34,9 +34,10 @@ module SFRP
       .to_output
     end
 
-    def compile(output_dir_path)
+    def compile(output_dir_path = nil)
       virtual_files = collect_virtual_files(@main_fmodule_uri)
-      make_output_set.generate!(output_dir_path, virtual_files)
+      output_set = make_output_set
+      output_set.generate!(output_dir_path, virtual_files) if output_dir_path
       output_file_names
     end
 
