@@ -61,7 +61,7 @@ module SFRP
       outs = Compiler.new(main_file, include_paths).compile(out_dir)
       out_paths = outs.map { |o| out_dir + '/' + o + '.c' }
       STDOUT.puts out_paths.join("\n") if show_files
-      STDERR.print `#{cc} -o #{main_file} #{out_paths.join(' ')}`
+      STDERR.print `#{cc} -o #{main_file} #{out_paths.join(' ')}` if cc
     rescue SFRP::CompileError => cerr
       text = error_class ? cerr.class.to_s : cerr.message
       if out_dir == nil
