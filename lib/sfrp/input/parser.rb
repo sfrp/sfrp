@@ -84,10 +84,10 @@ module SFRP
           str('as') >> ws >>
           ((str('$').maybe >> low_ident) | op_ident).as(:func_name) >>
           ws_inline? >>
-          str('(') >> ws? >> listing0(fixed_type_annot_type, ws? >> str(',') >>
+          str('(') >> ws? >> listing0(fixed_type_annot, ws? >> str(',') >>
           ws?).as(:params) >> ws? >>
           str(')') >> ws? >> str(':') >> ws? >>
-          fixed_type_annot_type.as(:ret_type_annot))
+          fixed_type_annot.as(:ret_type_annot))
           .as(:foreign_func_def)
         }
         rule(:function_def) {
@@ -137,7 +137,7 @@ module SFRP
           (ws? >> str(':') >> ws? >> type_annot).maybe.as(:type_annot_maybe)
         }
         rule(:type_annot) {
-          type_annot_type | type_annot_var
+          type_annot_type | type_annot_var | type_annot_tuple
         }
         rule(:type_annot_type) {
           whole = tconst_ref.as(:tconst_ref) >> (ws_inline? >> str('[') >>
@@ -145,14 +145,27 @@ module SFRP
           ws? >> str(']')).maybe.as(:args_maybe)
           whole.as(:type_annot_type)
         }
-        rule(:fixed_type_annot_type) {
-          whole = tconst_ref.as(:tconst_ref) >> (ws_inline? >> str('[') >>
-          ws? >> listing0(fixed_type_annot_type, ws? >> str(',') >>
-          ws?).as(:args) >> ws? >> str(']')).maybe.as(:args_maybe)
-          whole.as(:type_annot_type)
+        rule(:type_annot_tuple) {
+          (str('(') >> ws? >> listing2(type_annot, ws? >> str(',') >> ws?)
+          .as(:args) >> ws? >> str(')')).as(:type_annot_tuple)
         }
         rule(:type_annot_var) {
           low_ident.as(:type_annot_var)
+        }
+
+        # fixed type annotation
+        rule(:fixed_type_annot) {
+          fixed_type_annot_type | fixed_type_annot_tuple
+        }
+        rule(:fixed_type_annot_type) {
+          whole = tconst_ref.as(:tconst_ref) >> (ws_inline? >> str('[') >>
+          ws? >> listing0(fixed_type_annot, ws? >> str(',') >>
+          ws?).as(:args) >> ws? >> str(']')).maybe.as(:args_maybe)
+          whole.as(:type_annot_type)
+        }
+        rule(:fixed_type_annot_tuple) {
+          (str('(') >> ws? >> listing2(fixed_type_annot, ws? >> str(',') >>
+          ws?).as(:args) >> ws? >> str(')')).as(:type_annot_tuple)
         }
 
         # expression

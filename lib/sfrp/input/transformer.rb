@@ -95,6 +95,10 @@ module SFRP
         args = (x[:args_maybe] == nil ? [] : x[:args_maybe][:args])
         Raw::TypeAnnotationType.new(x[:tconst_ref], args)
       }
+      rule(:type_annot_tuple => subtree(:x)) {
+        tconst_ref = Raw::Ref.new("Tuple#{x[:args].size}")
+        Raw::TypeAnnotationType.new(tconst_ref, x[:args])
+      }
       rule(:type_annot_var => subtree(:x)){
         Raw::TypeAnnotationVar.new(x.to_s)
       }
