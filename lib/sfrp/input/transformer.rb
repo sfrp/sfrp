@@ -105,7 +105,8 @@ module SFRP
 
       # expression
       rule(:where_exp => subtree(:x)) {
-        Raw::LetExp.new(x[:exp], x[:assignments])
+        next x[:exp] if x[:where_clause_maybe].nil?
+        Raw::LetExp.new(x[:exp], x[:where_clause_maybe][:assignments])
       }
       rule(:seq_exp => subtree(:x)) {
         next x[:exp] unless x.is_a?(Array)

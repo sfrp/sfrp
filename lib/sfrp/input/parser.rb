@@ -92,12 +92,12 @@ module SFRP
         }
         rule(:function_def) {
           param = low_ident.as(:param_name) >> type_annot_maybe.as(:type_annot)
-          (((str('$').maybe >> low_ident) | op_ident)
-          .as(:func_name) >> ws_inline? >>
+          (((str('op') >> ws? >> op_ident.as(:func_name)) | (str('$').maybe >>
+          low_ident).as(:func_name)) >> ws_inline? >>
           str('(') >> ws? >> listing0(param, ws? >> str(',') >> ws?)
           .as(:params) >> ws? >>
           str(')') >> type_annot_maybe.as(:ret_type_annot) >> ws? >> str('=') >>
-          ws? >> exp.as(:exp)).as(:function_def)
+          ws? >> where_exp.as(:exp)).as(:function_def)
         }
         rule(:infix_def) {
           (str('infix') >> (str('l') | str('r')).maybe.as(:direction) >>
@@ -107,7 +107,7 @@ module SFRP
         rule(:node_def) {
           ((str('@') >> low_ident).as(:node_name) >>
           init_def_maybe.as(:init_exp) >> type_annot_maybe.as(:type_annot) >>
-          ws? >> str('=') >> ws? >> exp.as(:eval_exp)).as(:node_def)
+          ws? >> str('=') >> ws? >> where_exp.as(:eval_exp)).as(:node_def)
         }
         rule(:input_def) {
           (str('in') >> ws >> (str('@') >> low_ident).as(:node_name) >>
@@ -173,11 +173,11 @@ module SFRP
           seq_exp
         }
         rule(:where_exp) {
-          whole = seq_exp.as(:exp) >> ws >> str('where') >> ws >>
+          whole = seq_exp.as(:exp) >> (ws >> str('where') >> ws >>
           dynamic { |s, _|
             indent = str("\s").repeat(s.line_and_column[1] - 1)
             listing(assign, ws_inline? >> newline >> indent).as(:assignments)
-          }
+          }).maybe.as(:where_clause_maybe)
           whole.as(:where_exp)
         }
         rule(:seq_exp) {
