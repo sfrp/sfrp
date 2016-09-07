@@ -164,17 +164,13 @@ module SFRP
           f << L.stmt('static int i = 0')
           f << L.stmt("static struct #{low_type_str} #{memory_var}[#{count}]")
           f << L.if_stmt('clean_up') do |if_stmts|
-            if_stmts << L.while("i < #{count}") do |wh|
-              wh << L.stmt("#{memory_var}[i++].meta.mark = 0")
-            end
+            e = "#{memory_var}[i].meta.mark = 0"
+            if_stmts << L.stmt("for (i = 0; i < #{count}; i++) #{e}")
             if_stmts << L.stmt('i = 0')
             if_stmts << L.stmt('return 0')
           end
-          f << L.while("#{memory_var}[i].meta.mark") do |wh|
-            wh << L.stmt("#{memory_var}[i].meta.mark = 0")
-            wh << L.stmt("i = (i + 1) % #{count}")
-          end
-          f << L.stmt("return #{memory_var} + i")
+          f << L.stmt("while (#{memory_var}[i++].meta.mark)")
+          f << L.stmt("return #{memory_var} + (i - 1)")
         end
       end
 

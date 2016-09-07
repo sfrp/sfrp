@@ -151,17 +151,12 @@ functions:
       static int i = 0;
       static struct MaybeInt memory_MaybeInt[2];
       if (clean_up) {
-        while (i < 2) {
-          memory_MaybeInt[i++].meta.mark = 0;
-        }
+        for (i = 0; i < 2; i++) memory_MaybeInt[i].meta.mark = 0;
         i = 0;
         return 0;
       }
-      while (memory_MaybeInt[i].meta.mark) {
-        memory_MaybeInt[i].meta.mark = 0;
-        i = (i + 1) % 2;
-      }
-      return memory_MaybeInt + i;
+      while (memory_MaybeInt[i++].meta.mark);
+      return memory_MaybeInt + (i - 1);
     }
 
   - >
@@ -185,17 +180,12 @@ functions:
       static int i = 0;
       static struct Pair memory_Pair[1];
       if (clean_up) {
-        while (i < 1) {
-          memory_Pair[i++].meta.mark = 0;
-        }
+        for (i = 0; i < 1; i++) memory_Pair[i].meta.mark = 0;
         i = 0;
         return 0;
       }
-      while (memory_Pair[i].meta.mark) {
-        memory_Pair[i].meta.mark = 0;
-        i = (i + 1) % 1;
-      }
-      return memory_Pair + i;
+      while (memory_Pair[i++].meta.mark);
+      return memory_Pair + (i - 1);
     }
 
   - >
@@ -227,17 +217,12 @@ functions:
       static int i = 0;
       static struct X memory_X[0];
       if (clean_up) {
-        while (i < 0) {
-          memory_X[i++].meta.mark = 0;
-        }
+        for (i = 0; i < 0; i++) memory_X[i].meta.mark = 0;
         i = 0;
         return 0;
       }
-      while (memory_X[i].meta.mark) {
-        memory_X[i].meta.mark = 0;
-        i = (i + 1) % 0;
-      }
-      return memory_X + i;
+      while (memory_X[i++].meta.mark);
+      return memory_X + (i - 1);
     }
 
   - >
@@ -266,17 +251,12 @@ functions:
       static int i = 0;
       static struct XX memory_XX[0];
       if (clean_up) {
-        while (i < 0) {
-          memory_XX[i++].meta.mark = 0;
-        }
+        for (i = 0; i < 0; i++) memory_XX[i].meta.mark = 0;
         i = 0;
         return 0;
       }
-      while (memory_XX[i].meta.mark) {
-        memory_XX[i].meta.mark = 0;
-        i = (i + 1) % 0;
-      }
-      return memory_XX + i;
+      while (memory_XX[i++].meta.mark);
+      return memory_XX + (i - 1);
     }
 
   - >
