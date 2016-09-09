@@ -336,20 +336,41 @@ module SFRP
           (up_ident.as(:str) >> str('.')).maybe.as(:qualifier)
         }
 
-        rule(:num_ident) { match['0-9'] >> match['a-zA-Z0-9.'].repeat }
+        rule(:num_ident) {
+          match['0-9'] >> match['a-zA-Z0-9.'].repeat
+        }
         rule(:op_ident) {
           head_char = "!#%&*+/<=>?\\^|-~'".chars.map { |c| str(c) }.reduce(&:|)
           tail_char = "!#%&*+./<=>?\\^|-~'".chars.map { |c| str(c) }.reduce(&:|)
           head_char >> tail_char.repeat
         }
-        rule(:low_ident) { match['a-z_'] >> match['a-zA-Z0-9_'].repeat }
-        rule(:up_ident) { match['A-Z'] >> match['a-zA-Z0-9_'].repeat }
-        rule(:ws) { (str("\s") | str("\n")).repeat(1) }
-        rule(:ws?) { ws.maybe }
-        rule(:ws_inline) { str("\s").repeat(1) }
-        rule(:ws_inline?) { ws_inline.maybe }
-        rule(:newline) { str("\n").repeat(1) }
-        rule(:ws_inc_newline) { ws_inline? >> newline >> ws? }
+        rule(:low_ident) {
+          match['a-z_'] >> match['a-zA-Z0-9_'].repeat
+        }
+        rule(:up_ident) {
+          match['A-Z'] >> match['a-zA-Z0-9_'].repeat
+        }
+        rule(:ws) {
+          (str("\s") | line_feed).repeat(1)
+        }
+        rule(:ws?) {
+          ws.maybe
+        }
+        rule(:ws_inline) {
+          str("\s").repeat(1)
+        }
+        rule(:ws_inline?) {
+          ws_inline.maybe
+        }
+        rule(:newline) {
+          line_feed.repeat(1)
+        }
+        rule(:line_feed) {
+          (str('--') >> (str("\n").absent? >> any).repeat).maybe >> str("\n")
+        }
+        rule(:ws_inc_newline) {
+          ws_inline? >> newline >> ws?
+        }
 
         def listing(e, separator)
           (e.as(:e) >> (separator >> e.as(:e)).repeat).as(:listing)
