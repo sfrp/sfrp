@@ -8,7 +8,7 @@ module SFRP
       end
 
       def message
-        "Syntax error. The raw error message from Parslet is as follows:\n  " +
+        "Syntax error. The raw error message from Parslet is as follows:\n" +
         @message
       end
     end

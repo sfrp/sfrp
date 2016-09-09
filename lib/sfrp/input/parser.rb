@@ -25,7 +25,7 @@ module SFRP
         end
         others
       rescue Parslet::ParseFailed => err
-        raise ParseError.new(err.message)
+        raise ParseError.new(err.cause.ascii_tree)
       end
 
       class Parser < Parslet::Parser
@@ -124,8 +124,7 @@ module SFRP
           ws? >> str(')')).as(:output_def)
         }
         rule(:init_def_maybe) {
-          (ws? >> str('[') >> ws? >> exp.as(:init_exp) >> ws? >> str(']')).maybe
-          .as(:init_def_maybe)
+          (ws? >> exp.as(:init_exp)).maybe.as(:init_def_maybe)
         }
         rule(:foreign_str) {
           (str('{') >> match['^}'].repeat(1).as(:str) >> str('}'))
@@ -340,12 +339,18 @@ module SFRP
           match['0-9'] >> match['a-zA-Z0-9.'].repeat
         }
         rule(:op_ident) {
-          head_char = "!#%&*+/<=>?\\^|-~'".chars.map { |c| str(c) }.reduce(&:|)
-          tail_char = "!#%&*+./<=>?\\^|-~'".chars.map { |c| str(c) }.reduce(&:|)
-          head_char >> tail_char.repeat
+          enabled_char = "!#%&*+/<=>?\\^|-~'.".chars.map { |c| str(c) }.reduce(&:|)
+          enabled_char.repeat(1).capture(:name) >> dynamic { |_, c|
+            disabled_strs = ["=", "."]
+            disabled_strs.include?(c.captures[:name].to_s) ? str('*') : str('')
+          }
         }
         rule(:low_ident) {
-          match['a-z_'] >> match['a-zA-Z0-9_'].repeat
+          (match['a-z_'] >> match['a-zA-Z0-9_'].repeat).capture(:name) >>
+          dynamic { |_, c|
+            keywords = ['from']
+            keywords.include?(c.captures[:name].to_s) ? str('a') : str('')
+          }
         }
         rule(:up_ident) {
           match['A-Z'] >> match['a-zA-Z0-9_'].repeat

@@ -3,6 +3,6 @@ import Lib
 foreign init as $initProgram(Int) : Unit
 init $initProgram(0)
 
-in @input[0] from $getInt()
+in @input 0 from $getInt()
 @x : Int = - (@@input * 1 + @input * 2)
 out $putInt(@x)

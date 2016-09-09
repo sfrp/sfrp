@@ -15,6 +15,6 @@ f(x, y) = let t = (p, p) where p = (x, y)
               i = 100
           in (t, i)
 
-in @pin[False] from $pin(0)
-@acc[0] = @@acc + - - 1
+in @pin False from $pin(0)
+@acc 0 = @@acc + - - 1
 out $world(@pin, @acc)

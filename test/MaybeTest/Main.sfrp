@@ -2,5 +2,5 @@ import STDLib
 import Dir.Lib as X
 
 in @maybeInt : X.Maybe[Int] from X.$getMaybeInt()
-@acc[0] : Int = @@acc + X.getOrElse(@maybeInt, 0)
+@acc 0 : Int = @@acc + X.getOrElse(@maybeInt, 0)
 out X.$putInt(@acc)
