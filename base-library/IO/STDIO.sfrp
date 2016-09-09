@@ -1,0 +1,10 @@
+import Base
+
+foreign get_int as $getInt() : Int
+foreign put_int as $putInt(Int) : Unit
+
+foreign get_float as $getFloat() : Float
+foreign put_float as $putFloat(Float) : Unit
+
+foreign get_int_pair as $getIntPair() : (Int, Int)
+foreign put_int_pair as $putIntPair(Int, Int) : Unit

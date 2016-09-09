@@ -1,0 +1,69 @@
+ptype Int{int} = /^([0-9]+)$/\1/
+ptype Float{float} = /^([0-9]+\.[0-9]+)$/\1f/
+type +Bool{int} = True{1} | False{0}
+type +Unit{int} = Unit{0}
+
+type Maybe[a] = Just(a) | Nothing
+type Either[a, b] = Left(a) | Right(b)
+type Tuple2[a, b] = Tuple2(a, b)
+type Tuple3[a, b, c] = Tuple3(a, b, c)
+type Tuple4[a, b, c, d] = Tuple4(a, b, c, d)
+
+fst(pair : (a, b)) : a = x where (x, _) = pair
+snd(pair : (a, b)) : b = y where (_, y) = pair
+
+foreign - as '-(Int) : Int
+foreign + as '+(Int) : Int
+
+infix || 8
+foreign || as ||(Bool, Bool) : Bool
+
+infix && 9
+foreign && as &&(Bool, Bool) : Bool
+
+infixl | 10
+foreign | as |(Int, Int) : Int
+
+infixl ^ 11
+foreign ^ as ^(Int, Int) : Int
+
+infixl & 12
+foreign & as &(Int, Int) : Int
+
+infixl == 13
+infixl != 13
+infixl \= 13
+foreign == as ==(Int, Int) : Bool
+foreign != as !=(Int, Int) : Bool
+foreign \= as \=(Int, Int) : Bool
+
+infixl <  14
+infixl <= 14
+infixl >  14
+infixl >= 14
+foreign < as <(Int, Int) : Bool
+foreign <= as <=(Int, Int) : Bool
+foreign > as >(Int, Int) : Bool
+foreign >= as >=(Int, Int) : Bool
+
+infixl << 15
+infixl >> 15
+foreign << as <<(Int, Int) : Int
+foreign >> as >>(Int, Int) : Int
+
+infixl + 16
+infixl - 16
+infixl +. 16
+foreign + as +(Int, Int) : Int
+foreign - as -(Int, Int) : Int
+foreign + as +.(Float, Float) : Float
+foreign - as -.(Float, Float) : Float
+
+infixl * 17
+infixl / 17
+infixl *. 17
+infixl /. 17
+foreign * as *(Int, Int) : Int
+foreign / as /(Int, Int) : Int
+foreign * as *.(Float, Float) : Float
+foreign / as /.(Float, Float) : Float

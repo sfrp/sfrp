@@ -1,8 +1,10 @@
-import Lib
+import Base
+import IO.STDIO as SIO
 
 foreign init as $initProgram(Int) : Unit
 init $initProgram(0)
 
-in @input 0 from $getInt()
-@x : Int = - (@@input * 1 + @input * 2)
-out $putInt(@x)
+in @input 0 from SIO.$getInt()
+out SIO.$putInt(@x)
+
+@x : Int = -(@@input * 1 + @input * 2)

@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
-require 'sfrp/command'
-SFRP::Command.from_argv(ARGV, ENV).run
+require 'sfrp'
+Version = SFRP::VERSION
+INCLUDE_PATH = File.expand_path('../../base-library', __FILE__)
+SFRP::Command.from_argv(ARGV, INCLUDE_PATH).run

@@ -1,0 +1,10 @@
+import Base
+import IO.STDIO as SIO
+
+$getMaybeInt() : Maybe[Int] = case SIO.$getIntPair() of
+  (0, _) -> Nothing
+  (_, x) -> Just(x)
+
+getOrElse(m, v) = case m of
+  Just(x) -> x
+  Nothing -> v

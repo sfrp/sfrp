@@ -5,10 +5,10 @@ module SFRP
   class Command < Struct.new(
     :main_file, :out_dir, :show_files, :include_paths, :error_class, :cc
   )
-    def self.from_argv(argv, env)
+    def self.from_argv(argv, include_path)
       com = new('Main', './output', false, ['.'], false, nil)
       extract_argv(com, argv)
-      extract_env(com, env)
+      com[:include_paths] << include_path
       com
     end
 
@@ -49,12 +49,9 @@ module SFRP
         STDERR.puts 'invalid target specification'
         exit(1)
       end
-    end
-
-    def self.extract_env(com, env)
-      if env['SFRP_INCLUDE']
-        com.include_paths += env['SFRP_INCLUDE'].split(':')
-      end
+    rescue OptionParser::InvalidOption => error
+      puts error.message
+      exit(1)
     end
 
     def run
