@@ -41,12 +41,19 @@ module SFRP
     end
 
     class Node < Struct.new(:str, :ta, :exp, :init_exp, :sp)
-      def to_poly(_src_set, dest_set)
+      def initialized?
+        !init_exp.nil?
+      end
+
+      def to_poly(src_set, dest_set)
         dest_set << P.node(str, ta && ta.to_poly) do |n|
           collected_node_refs = []
           poly_exp = exp.alpha_convert({}, (0..1000).to_a)
             .lift_node_ref(collected_node_refs).to_poly
           collected_node_refs.each do |nr|
+            if nr.last && !src_set.node(nr.node_str).initialized?
+              raise NodeInvalidLastReferrenceError.new(nr.node_str)
+            end
             nr.last ? n.l(nr.node_str) : n.c(nr.node_str)
           end
           dest_set << n.eval_func(str, ta && ta.to_poly) do |f|

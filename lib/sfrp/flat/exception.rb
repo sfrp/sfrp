@@ -31,5 +31,15 @@ module SFRP
         "unbound variable '#{@var_str}'"
       end
     end
+
+    class NodeInvalidLastReferrenceError < CompileError
+      def initialize(node_str)
+        @node_str = node_str
+      end
+
+      def message
+        "node '#{@node_str}' should be initialized"
+      end
+    end
   end
 end

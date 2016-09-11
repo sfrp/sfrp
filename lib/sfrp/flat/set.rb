@@ -52,6 +52,10 @@ module SFRP
       def tconst(str)
         @tconsts.find { |tconst| tconst.str == str }
       end
+
+      def node(str)
+        @nodes.find { |node| node.str == str }
+      end
     end
   end
 end
