@@ -3,13 +3,32 @@ require 'sfrp/error'
 module SFRP
   module Flat
     class NodeRefInIllegalPositionError < CompileError
-      def initialize(target_str, source_position)
-        @target_str = target_str
-        @source_position = source_position
+      def initialize(node_str)
+        @node_str = node_str
       end
 
       def message
-        @target_str
+        "don't refer node '#{@node_str}'"
+      end
+    end
+
+    class DuplicatedVariableError < CompileError
+      def initialize(var_str)
+        @var_str = var_str
+      end
+
+      def message
+        "duplicated variable '#{@var_str}'"
+      end
+    end
+
+    class UnboundLocalVariableError < CompileError
+      def initialize(var_str)
+        @var_str = var_str
+      end
+
+      def message
+        "unbound variable '#{@var_str}'"
       end
     end
   end

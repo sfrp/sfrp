@@ -3,11 +3,19 @@ module SFRP
     class Function < Struct.new(:str, :ret_ta, :pstrs, :ptas, :exp, :ffi_str, :sp)
       require 'tapp'
       def to_poly(_src_set, dest_set)
+        pstrs.reject(&:nil?).each do |s|
+          raise DuplicatedVariableError.new(s) if pstrs.count(s) > 1
+        end
         dest_set << P.func(str, ret_ta && ret_ta.to_poly) do |f|
           pstrs.zip(ptas) do |s, ta|
             f.param(s, ta && ta.to_poly)
           end
-          f.exp { exp.to_poly } if exp
+          if exp
+            f.exp do
+              table = Hash[pstrs.map { |s| [s, s] }]
+              exp.alpha_convert(table, (0..1000).to_a).to_poly
+            end
+          end
           f.ffi_str(ffi_str) if ffi_str
         end
       end
@@ -36,19 +44,20 @@ module SFRP
       def to_poly(_src_set, dest_set)
         dest_set << P.node(str, ta && ta.to_poly) do |n|
           collected_node_refs = []
-          lifted_exp = exp.lift_node_ref(collected_node_refs)
+          poly_exp = exp.alpha_convert({}, (0..1000).to_a)
+            .lift_node_ref(collected_node_refs).to_poly
           collected_node_refs.each do |nr|
             nr.last ? n.l(nr.node_str) : n.c(nr.node_str)
           end
           dest_set << n.eval_func(str, ta && ta.to_poly) do |f|
-            f.exp { lifted_exp.to_poly }
+            f.exp { poly_exp }
             collected_node_refs.each_with_index.map do |_, i|
               f.param("__node_ref_#{i}")
             end
           end
           next if init_exp.nil?
           dest_set << n.init_func(str + '#init', ta && ta.to_poly) do |f|
-            f.exp { init_exp.to_poly }
+            f.exp { init_exp.alpha_convert({}, (0..1000).to_a).to_poly }
           end
         end
       end
