@@ -1,0 +1,4 @@
+import Base
+
+-- PORT-D
+foreign portD as $portD(Int, Bool) : Unit

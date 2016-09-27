@@ -1,5 +1,5 @@
-#ifndef STDIO_H
-#define STDIO_H
+#ifndef IO_STDIO_H
+#define IO_STDIO_H
 
 int get_int();
 int put_int(int);
