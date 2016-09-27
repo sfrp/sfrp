@@ -1,7 +1,6 @@
 module SFRP
   module Flat
     class Function < Struct.new(:str, :ret_ta, :pstrs, :ptas, :exp, :ffi_str, :sp)
-      require 'tapp'
       def to_poly(_src_set, dest_set)
         pstrs.reject(&:nil?).each do |s|
           raise DuplicatedVariableError.new(s) if pstrs.count(s) > 1
