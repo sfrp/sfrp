@@ -144,7 +144,7 @@ module SFRP
           MatchExp::Case.new(
             MatchExp::Pattern.new(Ref.new('True'), nil, [], sp), then_exp
           ),
-          Matche::Case.new(
+          MatchExp::Case.new(
             MatchExp::Pattern.new(Ref.new('False'), nil, [], sp), else_exp
           )
         ]
