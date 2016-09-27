@@ -3,8 +3,8 @@ SFRP
 
 Pure Functional Language for microcontrollers.
 
-[![Build Status](https://travis-ci.org/sfrp/sfrp.svg?branch=develop)](https://travis-ci.org/sfrp/sfrp)
-[![Coverage Status](https://coveralls.io/repos/github/sawaken/sfrp/badge.svg?branch=develop)](https://coveralls.io/github/sfrp/sfrp?branch=develop)
+[![Build Status](https://travis-ci.org/sfrp/sfrp.svg?branch=master)](https://travis-ci.org/sfrp/sfrp)
+[![Coverage Status](https://coveralls.io/repos/github/sfrp/sfrp/badge.svg?branch=master)](https://coveralls.io/github/sfrp/sfrp?branch=master)
 
 # Install SFRP
 ```
