@@ -6,5 +6,4 @@ $getMaybeInt() : Maybe[Int] = case SIO.$getIntPair() of
   (_, x) -> Just(x)
 
 getOrElse(m, v) = case m of
-  Just(v) -> v
-  Nothing -> v
+  Just(v) -> v; Nothing -> v

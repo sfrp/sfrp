@@ -183,7 +183,8 @@ module SFRP
           whole = seq_exp.as(:exp) >> (ws >> str('where') >> ws >>
           dynamic { |s, _|
             indent = str("\s").repeat(s.line_and_column[1] - 1)
-            listing(assign, ws_inline? >> newline >> indent).as(:assignments)
+            separator = (ws_inline? >> newline >> indent) | ws? >> str(';') >> ws?
+            listing(assign, separator).as(:assignments)
           }).maybe.as(:where_clause_maybe)
           whole.as(:where_exp)
         }
@@ -255,7 +256,8 @@ module SFRP
         rule(:let_exp) {
           whole = str('let') >> ws >> dynamic { |s, _|
             indent = str("\s").repeat(s.line_and_column[1] - 1)
-            listing(assign, ws_inline? >> newline >> indent).as(:assignments)
+            separator = (ws_inline? >> newline >> indent) | ws? >> str(';') >> ws?
+            listing(assign, separator).as(:assignments)
           } >> ws >> str('in') >> ws >> exp.as(:in_exp)
           whole.as(:let_exp)
         }
@@ -270,7 +272,8 @@ module SFRP
           whole = str('case') >> ws >> exp.as(:left_exp) >> ws >> str('of') >>
           ws? >> dynamic { |s, _|
             indent = str("\s").repeat(s.line_and_column[1] - 1)
-            listing(match_case, ws_inline? >> newline >> indent).as(:cases)
+            separator = (ws_inline? >> newline >> indent) | ws? >> str(';') >> ws?
+            listing(match_case, separator).as(:cases)
           }
           whole.as(:match_exp)
         }
