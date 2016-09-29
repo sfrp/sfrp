@@ -25,6 +25,16 @@ module SFRP
         Function.new(@str, @param_strs, @ftype_annot, exp, @ffi_str)
       end
 
+      def check_recursion(set, path = [])
+        return if @exp == nil
+        if path.include?(@str)
+          raise RecursiveError.new(path.drop_while { |s| s != @str })
+        end
+        @exp.called_func_strs.each do |str|
+          set.func(str).check_recursion(set, path + [@str])
+        end
+      end
+
       def to_mono(monofier, mono_func_str)
         raise UndeterminableTypeError.new(@str, @ftyping) unless @ftyping.mono?
         mono_type_str = monofier.use_type(@ftyping.body)
@@ -71,7 +81,7 @@ module SFRP
 
       def check_recursion(set, path = [])
         if path.include?(@str)
-          raise RecursiveNodeError.new(path.drop_while { |s| s != @str })
+          raise RecursiveError.new(path.drop_while { |s| s != @str })
         end
         @node_refs.each do |nr|
           next if nr.last

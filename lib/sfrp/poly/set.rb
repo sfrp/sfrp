@@ -20,7 +20,10 @@ module SFRP
 
       def to_mono
         Mono::Set.new do |dest_set|
-          @func_h.values.each { |f| f.ftyping(self) }
+          @func_h.values.each do |f|
+            f.check_recursion(self)
+            f.ftyping(self)
+          end
           @node_h.values.each do |n|
             n.check_recursion(self)
             n.typing(self)

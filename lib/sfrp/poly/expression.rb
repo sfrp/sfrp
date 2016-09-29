@@ -26,6 +26,10 @@ module SFRP
         MatchExp.new(@left_exp.clone, cloned_cases, @id)
       end
 
+      def called_func_strs
+        [@left_exp, *@cases.map(&:exp)].flat_map(&:called_func_strs)
+      end
+
       def to_mono(monofier)
         raise UndeterminableTypeError.new(@id, @typing) unless @typing.mono?
         mono_type_str = monofier.use_type(@typing)
@@ -56,6 +60,10 @@ module SFRP
         FuncCallExp.new(@func_str, @arg_exps.map(&:clone), @id)
       end
 
+      def called_func_strs
+        [@func_str, *@arg_exps.flat_map(&:called_func_strs)]
+      end
+
       def to_mono(monofier)
         raise UndeterminableTypeError.new(@id, @typing) unless @typing.mono?
         mono_func_str = monofier.use_func(@func_str, @ftyping)
@@ -83,6 +91,10 @@ module SFRP
         VConstCallExp.new(@vconst_str, @arg_exps.map(&:clone), @id)
       end
 
+      def called_func_strs
+        @arg_exps.flat_map(&:called_func_strs)
+      end
+
       def to_mono(monofier)
         raise UndeterminableTypeError.new(@id, @typing) unless @typing.mono?
         mono_vconst_str = monofier.use_vconst(@vconst_str, @typing)
@@ -103,6 +115,10 @@ module SFRP
 
       def clone
         VarRefExp.new(@var_str, @id)
+      end
+
+      def called_func_strs
+        []
       end
 
       def to_mono(monofier)
