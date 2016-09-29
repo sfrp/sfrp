@@ -69,6 +69,16 @@ module SFRP
         @ftyping.unify(@ftype_annot.to_ftyping).body.unify(@typing)
       end
 
+      def check_recursion(set, path = [])
+        if path.include?(@str)
+          raise RecursiveNodeError.new(path.drop_while { |s| s != @str })
+        end
+        @node_refs.each do |nr|
+          next if nr.last
+          set.node(nr.node_str).check_recursion(set, path + [@str])
+        end
+      end
+
       def to_mono(monofier)
         raise UndeterminableTypeError.new(@str, @typing) unless @typing.mono?
         type_str = monofier.use_type(@typing)

@@ -21,13 +21,18 @@ module SFRP
       def to_mono
         Mono::Set.new do |dest_set|
           @func_h.values.each { |f| f.ftyping(self) }
-          @node_h.values.each { |n| n.typing(self) }
+          @node_h.values.each do |n|
+            n.check_recursion(self)
+            n.typing(self)
+          end
           Monofier.new(self, dest_set) do |m|
             @init_func_strs.each do |func_str|
               mono_func_str = m.use_func(func_str, func(func_str).ftyping(self))
               dest_set.append_init_func_str(mono_func_str)
             end
-            @node_h.values.each { |node| dest_set << node.to_mono(m) }
+            @node_h.values.each do |node|
+              dest_set << node.to_mono(m)
+            end
             @output_node_strs.each do |node_str|
               dest_set.append_output_node_str(m.use_node(node_str))
             end

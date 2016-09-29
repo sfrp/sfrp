@@ -24,5 +24,19 @@ module SFRP
         "cannot unify #{@typing1.to_s(vars)} and #{@typing2.to_s(vars)}"
       end
     end
+
+    class RecursiveError < CompileError
+      def initialize(node_strs)
+        @node_strs = node_strs
+      end
+
+      def chain_str
+        [*@node_strs, @node_strs[0]].join(' -> ')
+      end
+
+      def message
+        "recursive node/function path: #{chain_str}"
+      end
+    end
   end
 end
