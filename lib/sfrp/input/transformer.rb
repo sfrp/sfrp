@@ -23,20 +23,30 @@ module SFRP
         replace = x[:replace].to_s
         Raw::PrimTConst.new(rname, nil, native_str, pattern, replace)
       }
+      rule(:prim_enum_type_def => subtree(:x)) {
+        rname = x[:tconst_str].to_s
+        vconsts = x[:vconst_defs]
+        native_str = x[:c_type_str]
+        vconsts.each { |v| v.tconst_rname = rname }
+        Raw::TConst.new(rname, nil, [], vconsts, native_str, true)
+      }
+      rule(:prim_enum_vconst_def => subtree(:x)) {
+        rname = x[:vconst_str].to_s
+        native_str = x[:c_value_str]
+        Raw::VConst.new(rname, nil, nil, native_str, [])
+      }
       rule(:type_def => subtree(:x)) {
         rname = x[:tconst_name].to_s
         pstrs = x[:params_maybe] ? x[:params_maybe][:params].map(&:to_s) : []
         vconsts = x[:vconst_defs]
-        native_str = x[:c_type_str_maybe] && x[:c_type_str_maybe][:c_type_str]
         static = x[:modifier] && x[:modifier][:m].to_s == '+'
         vconsts.each { |v| v.tconst_rname = rname }
-        Raw::TConst.new(rname, nil, pstrs, vconsts, native_str, static)
+        Raw::TConst.new(rname, nil, pstrs, vconsts, nil, static)
       }
       rule(:vconst_def => subtree(:x)) {
         rname = x[:vconst_name].to_s
-        native_str = x[:c_value_str_maybe] && x[:c_value_str_maybe][:c_value_str]
         ptas = x[:type_annots_maybe] ? x[:type_annots_maybe][:type_annots] : []
-        Raw::VConst.new(rname, nil, nil, native_str, ptas)
+        Raw::VConst.new(rname, nil, nil, nil, ptas)
       }
       rule(:foreign_func_def => subtree(:x)) {
         rname = x[:func_name].to_s

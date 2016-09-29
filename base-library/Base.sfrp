@@ -1,7 +1,7 @@
 ptype Int{int} = /^((0x)?[0-9]+)$/\1/
 ptype Float{float} = /^([0-9]+\.[0-9]+)$/\1f/
-type +Bool{int} = True{1} | False{0}
-type +Unit{int} = Unit{0}
+ptype Bool{int} = True{1} | False{0}
+ptype Unit{int} = Unit{0}
 
 type Maybe[a] = Just(a) | Nothing
 type Either[a, b] = Left(a) | Right(b)

@@ -40,7 +40,7 @@ module SFRP
         rule(:toplevel_definition) {
           import_def |
           init_def |
-          prim_type_def | type_def |
+          prim_type_def | prim_enum_type_def | type_def |
           foreign_func_def | function_def | infix_def |
           node_def | input_def | output_def
         }
@@ -61,19 +61,27 @@ module SFRP
           str('/') >> match['^/'].repeat(1).as(:rexp) >> str('/') >>
           match['^/'].repeat(1).as(:replace) >> str('/')).as(:prim_type_def)
         }
+        rule(:prim_enum_type_def) {
+          (str('ptype') >> ws >> up_ident.as(:tconst_str) >> ws? >>
+          foreign_str.as(:c_type_str) >> ws? >> str('=') >> ws? >>
+          listing(prim_enum_vconst_def, ws? >> str('|') >> ws?)
+          .as(:vconst_defs)).as(:prim_enum_type_def)
+        }
+        rule(:prim_enum_vconst_def) {
+          (up_ident.as(:vconst_str) >> ws? >> foreign_str.as(:c_value_str))
+          .as(:prim_enum_vconst_def)
+        }
         rule(:type_def) {
           tconst_params = (str('[') >> ws? >>
           listing0(low_ident, ws? >> str(',') >> ws?).as(:params) >> ws? >>
           str(']')).maybe.as(:params_maybe)
           (str('type') >> ws? >> ((str('+') | str('*')).as(:m) >> ws?)
-          .maybe.as(:modifier) >> up_ident.as(:tconst_name) >>
-          (ws? >> foreign_str.as(:c_type_str)).maybe.as(:c_type_str_maybe) >>
+          .maybe.as(:modifier) >> up_ident.as(:tconst_name) >> ws_inline? >>
           tconst_params >> ws? >> str('=') >> ws? >> listing(vconst_def,
           ws? >> str('|') >> ws?).as(:vconst_defs)).as(:type_def)
         }
         rule(:vconst_def) {
-          (up_ident.as(:vconst_name) >> (ws? >> foreign_str.as(:c_value_str))
-          .maybe.as(:c_value_str_maybe) >>
+          (up_ident.as(:vconst_name) >>
           (ws_inline? >> str('(') >> ws? >> listing0(type_annot, ws? >>
           str(',') >> ws?).as(:type_annots) >> ws? >> str(')'))
           .maybe.as(:type_annots_maybe)).as(:vconst_def)
