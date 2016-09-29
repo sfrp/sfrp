@@ -81,6 +81,9 @@ module SFRP
         f.exp do
           M.match_e('X', M.v_e('X', 'arg'))do |m|
             mint = 'MaybeInt'
+            m.case(M.pat('X', 'X1', M.pany(mint, 'x'))) do
+              M.vc_call_e('X', 'X1', M.v_e(mint, 'x'))
+            end
             m.case(M.pat('X', 'X2', M.pany(mint, 'x'), M.pany(mint, 'y'))) do
               M.vc_call_e('X', 'X2', M.v_e(mint, 'y'), M.v_e(mint, 'x'))
             end

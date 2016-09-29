@@ -24,6 +24,7 @@ module SFRP
 
       # Note that the expression this returns is not wrapped by ().
       def to_low(set, env)
+        check_completeness(set)
         tmp_var_str = env.new_var(@left_exp.type_str)
         left_let_exp = "#{tmp_var_str} = #{@left_exp.to_low(set, env)}"
         case_exp = L.if_chain_exp do |i|
@@ -36,6 +37,14 @@ module SFRP
           end
         end
         "#{left_let_exp}, #{case_exp}"
+      end
+
+      def check_completeness(set)
+        set.type(@left_exp.type_str).all_pattern_examples(set).each do |exam|
+          unless @cases.any? { |c| c.pattern.accept?(exam) }
+            raise IncompleteMatchExpError.new
+          end
+        end
       end
 
       def memory(set)

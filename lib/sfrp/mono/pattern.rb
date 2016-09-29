@@ -1,6 +1,8 @@
 module SFRP
   module Mono
     class Pattern
+      PatternExample = Struct.new(:vconst_str, :args)
+
       def initialize(type_str, vconst_str, ref_var_str, arg_patterns)
         @type_str = type_str
         @vconst_str = vconst_str
@@ -22,6 +24,14 @@ module SFRP
 
       def named?
         @ref_var_str
+      end
+
+      def accept?(pattern_example)
+        return true if any?
+        return false unless pattern_example.vconst_str == @vconst_str
+        @arg_patterns.zip(pattern_example.args).all? do |pat, pat_exam|
+          pat.accept?(pat_exam)
+        end
       end
 
       # Return whole conditional-low-exps for the pattern-matching.

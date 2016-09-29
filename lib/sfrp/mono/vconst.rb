@@ -34,6 +34,16 @@ module SFRP
         @arg_type_strs.all? { |s| set.type(s).native? }
       end
 
+      def all_pattern_examples(set)
+        return [Pattern::PatternExample.new(@str, [])] if @arg_type_strs.empty?
+        head, *tail = @arg_type_strs.map do |type_str|
+          set.type(type_str).all_pattern_examples(set)
+        end
+        head.product(*tail).map do |args|
+          Pattern::PatternExample.new(@str, args)
+        end
+      end
+
       # Generate a struct-element of term for this vconst.
       def gen_term_definition(set, term_id, terms)
         return if native?

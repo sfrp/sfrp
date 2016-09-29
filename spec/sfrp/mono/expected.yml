@@ -127,7 +127,7 @@ functions:
       X _v00;
       MaybeInt x;
       MaybeInt y;
-      return _v00 = arg, (x = (_v00->terms.term1.member0), y = (_v00->terms.term1.member1), VC_X2(y, x));
+      return _v00 = arg, (_v00->meta.term_id == 0) ? (x = (_v00->terms.term0.member0), VC_X1(x)) : (x = (_v00->terms.term1.member0), y = (_v00->terms.term1.member1), VC_X2(y, x));
     }
 
   # Type MaybeInt

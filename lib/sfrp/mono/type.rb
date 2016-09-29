@@ -56,6 +56,13 @@ module SFRP
         !(static? && single_vconst?)
       end
 
+      def all_pattern_examples(set)
+        return [Pattern::PatternExample.new(nil, [])] if infinite?
+        @vconst_strs.flat_map do |vc_str|
+          set.vconst(vc_str).all_pattern_examples(set)
+        end
+      end
+
       # Return max memory size to hold an instance of this type.
       def memory(set)
         return Memory.one(@str) if infinite?
