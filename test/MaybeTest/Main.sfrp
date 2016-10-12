@@ -1,5 +1,5 @@
 import Base
-import IO.STDIO as SIO
+import Base.IO.STDIO as SIO
 import SubDir.Lib as Lib
 
 in @maybeInt : Maybe[Int] from Lib.$getMaybeInt()

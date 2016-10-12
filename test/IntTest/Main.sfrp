@@ -1,5 +1,5 @@
 import Base
-import IO.STDIO as SIO
+import Base.IO.STDIO as SIO
 
 foreign init as $initProgram(Int) : Unit
 init $initProgram(0)
