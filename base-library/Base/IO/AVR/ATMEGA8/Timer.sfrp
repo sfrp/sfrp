@@ -1,0 +1,4 @@
+import Base
+
+foreign elapsed_time as $elapsedTime() : Int
+in @elapsedTime from $elapsedTime()
