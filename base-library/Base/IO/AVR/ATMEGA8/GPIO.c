@@ -1,5 +1,4 @@
 #include <avr/io.h>
-#include "ATMEGA8.h"
 
 int portD(int port_num, int high_or_low) {
   high_or_low = (high_or_low == 0 ? 0 : 1);

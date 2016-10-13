@@ -1,5 +1,5 @@
-#ifndef TIMER_H
-#define TIMER_H
+#ifndef BASE_IO_AVR_ATMEGA8_TIMER
+#define BASE_IO_AVR_ATMEGA8_TIMER
 
 int elapsed_time();
 

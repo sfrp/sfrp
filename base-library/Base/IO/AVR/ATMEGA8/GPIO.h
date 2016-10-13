@@ -1,5 +1,5 @@
-#ifndef IO_AVR_ATMEGA8
-#define IO_AVR_ATMEGA8
+#ifndef IO_AVR_ATMEGA8_GPIO
+#define IO_AVR_ATMEGA8_GPIO
 
 int portD(int, int);
 
