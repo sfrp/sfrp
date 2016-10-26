@@ -13,6 +13,9 @@ type Tuple5[a, b, c, d, e] = Tuple5(a, b, c, d, e)
 fst(pair : (a, b)) : a = x where (x, _) = pair
 snd(pair : (a, b)) : b = y where (_, y) = pair
 
+infixl <> 0
+op <>(a : Unit, b : Unit) : Unit = Unit
+
 foreign - as '-(Int) : Int
 foreign + as '+(Int) : Int
 foreign ! as '!(Bool) : Bool

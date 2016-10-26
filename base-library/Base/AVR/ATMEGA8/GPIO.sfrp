@@ -1,4 +1,30 @@
 import Base
 
--- PORT-D
+-- PB
+foreign pinB as $pinB(Int) : Bool
+in @pinB0 from $pinB(0)
+in @pinB1 from $pinB(1)
+in @pinB2 from $pinB(2)
+in @pinB3 from $pinB(3)
+in @pinB4 from $pinB(4)
+in @pinB5 from $pinB(5)
+in @pinB6 from $pinB(6)
+in @pinB7 from $pinB(7)
+
+foreign posEdgePB as $posEdgePB(Int) : Bool
+in @posEdgePB0 from $posEdgePB(0)
+in @posEdgePB1 from $posEdgePB(1)
+in @posEdgePB2 from $posEdgePB(2)
+in @posEdgePB3 from $posEdgePB(3)
+in @posEdgePB4 from $posEdgePB(4)
+in @posEdgePB5 from $posEdgePB(5)
+in @posEdgePB6 from $posEdgePB(6)
+in @posEdgePB7 from $posEdgePB(7)
+
+foreign portB as $portB(Int, Bool) : Unit
+
+-- PC
+foreign portC as $portC(Int, Bool) : Unit
+
+-- PD
 foreign portD as $portD(Int, Bool) : Unit

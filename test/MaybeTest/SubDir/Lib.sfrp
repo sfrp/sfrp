@@ -1,5 +1,5 @@
 import Base
-import Base.IO.STDIO as SIO
+import Base.STDIO as SIO
 
 $getMaybeInt() : Maybe[Int] = case SIO.$getIntPair() of
   (0, _) -> Nothing
