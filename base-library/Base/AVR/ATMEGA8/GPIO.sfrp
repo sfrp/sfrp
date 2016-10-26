@@ -1,6 +1,7 @@
 import Base
 
 -- PB
+
 foreign pinB as $pinB(Int) : Bool
 in @pinB0 from $pinB(0)
 in @pinB1 from $pinB(1)
@@ -24,7 +25,49 @@ in @posEdgePB7 from $posEdgePB(7)
 foreign portB as $portB(Int, Bool) : Unit
 
 -- PC
+
+foreign pinC as $pinC(Int) : Bool
+in @pinC0 from $pinC(0)
+in @pinC1 from $pinC(1)
+in @pinC2 from $pinC(2)
+in @pinC3 from $pinC(3)
+in @pinC4 from $pinC(4)
+in @pinC5 from $pinC(5)
+in @pinC6 from $pinC(6)
+in @pinC7 from $pinC(7)
+
+foreign posEdgePC as $posEdgePC(Int) : Bool
+in @posEdgePC0 from $posEdgePC(0)
+in @posEdgePC1 from $posEdgePC(1)
+in @posEdgePC2 from $posEdgePC(2)
+in @posEdgePC3 from $posEdgePC(3)
+in @posEdgePC4 from $posEdgePC(4)
+in @posEdgePC5 from $posEdgePC(5)
+in @posEdgePC6 from $posEdgePC(6)
+in @posEdgePC7 from $posEdgePC(7)
+
 foreign portC as $portC(Int, Bool) : Unit
 
 -- PD
+
+foreign pinD as $pinD(Int) : Bool
+in @pinD0 from $pinD(0)
+in @pinD1 from $pinD(1)
+in @pinD2 from $pinD(2)
+in @pinD3 from $pinD(3)
+in @pinD4 from $pinD(4)
+in @pinD5 from $pinD(5)
+in @pinD6 from $pinD(6)
+in @pinD7 from $pinD(7)
+
+foreign posEdgePD as $posEdgePD(Int) : Bool
+in @posEdgePD0 from $posEdgePD(0)
+in @posEdgePD1 from $posEdgePD(1)
+in @posEdgePD2 from $posEdgePD(2)
+in @posEdgePD3 from $posEdgePD(3)
+in @posEdgePD4 from $posEdgePD(4)
+in @posEdgePD5 from $posEdgePD(5)
+in @posEdgePD6 from $posEdgePD(6)
+in @posEdgePD7 from $posEdgePD(7)
+
 foreign portD as $portD(Int, Bool) : Unit
