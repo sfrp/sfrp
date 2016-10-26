@@ -185,7 +185,8 @@ module SFRP
 
       # pattern
       rule(:any_pattern => simple(:x)) {
-        Raw::MatchExp::Pattern.new(nil, x.to_s, [])
+        var_str = x.to_s
+        Raw::MatchExp::Pattern.new(nil, var_str == '_' ? nil : var_str, [])
       }
       rule(:vc_pattern_with_paren => subtree(:x)) {
         Raw::MatchExp::Pattern.new(x[:vconst_ref], x[:var_ref], x[:args])
