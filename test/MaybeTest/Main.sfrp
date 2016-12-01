@@ -5,4 +5,4 @@ import SubDir.Lib as Lib
 in @maybeInt : Maybe[Int] from Lib.$getMaybeInt()
 out SIO.$putInt(@acc)
 
-@acc 0 : Int = @@acc + Lib.getOrElse(@maybeInt, 0)
+@acc init 0 : Int = @@acc + Lib.getOrElse(@maybeInt, 0)

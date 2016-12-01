@@ -19,12 +19,12 @@ Write following simple accumulator program.
 ```
 -- Main.sfrp
 import Base
-import IO.STDIO as IO
+import Base.STDIO as IO
 
 in @x from IO.$getInt()
 out IO.$putInt(@y)
 
-@y 0 = @x + @@y
+@y init 0 = @x + @@y
 ```
 
 Compile and Run the program.

@@ -132,7 +132,7 @@ module SFRP
           ws? >> str(')')).as(:output_def)
         }
         rule(:init_def_maybe) {
-          (ws? >> exp.as(:init_exp)).maybe.as(:init_def_maybe)
+          (ws? >> str('init') >> ws >> exp.as(:init_exp)).maybe.as(:init_def_maybe)
         }
         rule(:foreign_str) {
           (str('{') >> match['^}'].repeat(1).as(:str) >> str('}'))
