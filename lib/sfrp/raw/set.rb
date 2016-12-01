@@ -56,36 +56,36 @@ module SFRP
         end
       end
 
-      def weakest_op_position(ns, func_refs, sp)
-        ab_func_names = func_refs.map { |fr| func(ns, fr, sp).absolute_name }
+      def weakest_op_position(ns, func_refs)
+        ab_func_names = func_refs.map { |fr| func(ns, fr).absolute_name }
         infix_h = Hash[@infixies.map { |i| [i.absolute_func_name(self), i] }]
         ab_func_names.each_with_index.map do |x, idx|
           [(infix_h.key?(x) ? infix_h[x].absolute_priority(idx) : [0, 0]), idx]
         end.min[1]
       end
 
-      def func(ns, func_ref, sp)
-        resolve(ns, func_ref, @func_h, sp)
+      def func(ns, func_ref)
+        resolve(ns, func_ref, @func_h)
       end
 
-      def vconst(ns, vconst_ref, sp)
-        resolve(ns, vconst_ref, @vconst_h, sp)
+      def vconst(ns, vconst_ref)
+        resolve(ns, vconst_ref, @vconst_h)
       end
 
-      def node(ns, node_ref, sp)
-        resolve(ns, node_ref, @node_h, sp)
+      def node(ns, node_ref)
+        resolve(ns, node_ref, @node_h)
       end
 
-      def tconst(ns, tconst_ref, sp)
-        resolve(ns, tconst_ref, @tconst_h, sp)
+      def tconst(ns, tconst_ref)
+        resolve(ns, tconst_ref, @tconst_h)
       end
 
       private
 
-      def resolve(ns, ref, hash, sp)
+      def resolve(ns, ref, hash)
         hits = ns.search_for_absolute_names(ref).select { |x| hash.key?(x) }
-        raise NameError.new(ref.to_s, sp) if hits.empty?
-        raise AmbiguousNameError.new(ref.to_s, hits, sp) if hits.size > 1
+        raise NameError.new(ref.to_s) if hits.empty?
+        raise AmbiguousNameError.new(ref.to_s, hits) if hits.size > 1
         hash[hits[0]]
       end
 

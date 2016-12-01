@@ -1,9 +1,9 @@
 module SFRP
   module Flat
-    class FuncCallExp < Struct.new(:func_str, :arg_exps, :sp)
+    class FuncCallExp < Struct.new(:func_str, :arg_exps)
       def lift_node_ref(collected_node_refs)
         args = arg_exps.map { |e| e.lift_node_ref(collected_node_refs) }
-        FuncCallExp.new(func_str, args, sp)
+        FuncCallExp.new(func_str, args)
       end
 
       def alpha_convert(table, serial)
@@ -16,10 +16,10 @@ module SFRP
       end
     end
 
-    class VConstCallExp < Struct.new(:vconst_str, :arg_exps, :sp)
+    class VConstCallExp < Struct.new(:vconst_str, :arg_exps)
       def lift_node_ref(collected_node_refs)
         args = arg_exps.map { |e| e.lift_node_ref(collected_node_refs) }
-        VConstCallExp.new(vconst_str, args, sp)
+        VConstCallExp.new(vconst_str, args)
       end
 
       def alpha_convert(table, serial)
@@ -32,7 +32,7 @@ module SFRP
       end
     end
 
-    class NodeRefExp < Struct.new(:node_str, :last, :sp)
+    class NodeRefExp < Struct.new(:node_str, :last)
       NodeRef = Struct.new(:node_str, :last)
 
       def lift_node_ref(collected_node_refs)
@@ -40,7 +40,7 @@ module SFRP
         unless collected_node_refs.include?(node_ref)
           collected_node_refs << node_ref
         end
-        VarRefExp.new("__node_ref_#{collected_node_refs.index(node_ref)}", sp)
+        VarRefExp.new("__node_ref_#{collected_node_refs.index(node_ref)}")
       end
 
       def alpha_convert(_table, _serial)
@@ -52,10 +52,10 @@ module SFRP
       end
     end
 
-    class MatchExp < Struct.new(:left_exp, :cases, :sp)
+    class MatchExp < Struct.new(:left_exp, :cases)
       Case = Struct.new(:pattern, :exp)
 
-      class Pattern < Struct.new(:vconst_str, :ref_var_str, :args, :sp)
+      class Pattern < Struct.new(:vconst_str, :ref_var_str, :args)
         def alpha_convert(table, serial)
           new_ref_var_str =
             ref_var_str && (table[ref_var_str] = "_alpha#{serial.shift}")
@@ -84,7 +84,7 @@ module SFRP
         new_cases = cases.map do |c|
           Case.new(c.pattern, c.exp.lift_node_ref(collected_node_refs))
         end
-        MatchExp.new(new_left_exp, new_cases, sp)
+        MatchExp.new(new_left_exp, new_cases)
       end
 
       def alpha_convert(table, serial)
@@ -107,7 +107,7 @@ module SFRP
       end
     end
 
-    class VarRefExp < Struct.new(:var_str, :sp)
+    class VarRefExp < Struct.new(:var_str)
       def lift_node_ref(_collected_node_refs)
         self
       end

@@ -1,6 +1,6 @@
 module SFRP
   module Raw
-    class Ref < Struct.new(:relative_name, :qualifier_name, :sp)
+    class Ref < Struct.new(:relative_name, :qualifier_name)
       def to_s
         return relative_name if qualifier_name.nil?
         qualifier_name + '.' + relative_name

@@ -1,6 +1,6 @@
 module SFRP
   module Flat
-    class Function < Struct.new(:str, :ret_ta, :pstrs, :ptas, :exp, :ffi_str, :sp)
+    class Function < Struct.new(:str, :ret_ta, :pstrs, :ptas, :exp, :ffi_str)
       def to_poly(_src_set, dest_set)
         pstrs.reject(&:nil?).each do |s|
           raise DuplicatedVariableError.new(s) if pstrs.count(s) > 1
@@ -20,7 +20,7 @@ module SFRP
       end
     end
 
-    class TConst < Struct.new(:str, :pstrs, :vc_strs, :native_str, :static, :sp)
+    class TConst < Struct.new(:str, :pstrs, :vc_strs, :native_str, :static)
       def type_annot
         TypeAnnotationType.new(str, pstrs.map { |s| TypeAnnotationVar.new(s) })
       end
@@ -31,7 +31,7 @@ module SFRP
       end
     end
 
-    class VConst < Struct.new(:str, :tconst_str, :native_str, :param_tas, :sp)
+    class VConst < Struct.new(:str, :tconst_str, :native_str, :param_tas)
       def to_poly(src_set, dest_set)
         tconst = src_set.tconst(tconst_str)
         fta = FuncTypeAnnotation.new(tconst.type_annot, param_tas)
@@ -39,7 +39,7 @@ module SFRP
       end
     end
 
-    class Node < Struct.new(:str, :ta, :exp, :init_exp, :sp)
+    class Node < Struct.new(:str, :ta, :exp, :init_exp)
       def initialized?
         !init_exp.nil?
       end
@@ -69,19 +69,19 @@ module SFRP
       end
     end
 
-    class FuncTypeAnnotation < Struct.new(:ret_ta, :arg_tas, :sp)
+    class FuncTypeAnnotation < Struct.new(:ret_ta, :arg_tas)
       def to_poly
         Poly::FuncTypeAnnotation.new(ret_ta.to_poly, arg_tas.map(&:to_poly))
       end
     end
 
-    class TypeAnnotationType < Struct.new(:tconst_str, :arg_tas, :sp)
+    class TypeAnnotationType < Struct.new(:tconst_str, :arg_tas)
       def to_poly
         P.t(tconst_str, *arg_tas.map(&:to_poly))
       end
     end
 
-    class TypeAnnotationVar < Struct.new(:var_str, :sp)
+    class TypeAnnotationVar < Struct.new(:var_str)
       def to_poly
         P.tv(var_str)
       end
