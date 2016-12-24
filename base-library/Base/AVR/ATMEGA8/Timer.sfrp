@@ -1,4 +1,10 @@
 import Base
 
-foreign elapsed_time as $elapsedTime() : Int
-in @elapsedTime from $elapsedTime()
+foreign get_dsec as $getDsec(Int) : Int
+in @dsec : Int from $getDsec(1024)
+
+foreign get_dmsec as $getDmsec(Int) : Int
+in @dmsec : Int from $getDmsec(1024)
+
+foreign get_uncertain_dmsec as $getUncertainDmsec(Int) : Int
+in @uncertainDmsec : Int from $getUncertainDmsec(1024)
