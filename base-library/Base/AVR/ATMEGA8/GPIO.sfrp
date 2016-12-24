@@ -23,6 +23,7 @@ in @posEdgePB6 from $posEdgePB(6)
 in @posEdgePB7 from $posEdgePB(7)
 
 foreign portB as $portB(Int, Bool) : Unit
+foreign portBs as $portBs(Int) : Unit
 
 -- PC
 
@@ -47,6 +48,7 @@ in @posEdgePC6 from $posEdgePC(6)
 in @posEdgePC7 from $posEdgePC(7)
 
 foreign portC as $portC(Int, Bool) : Unit
+foreign portCs as $portCs(Int) : Unit
 
 -- PD
 
@@ -71,3 +73,4 @@ in @posEdgePD6 from $posEdgePD(6)
 in @posEdgePD7 from $posEdgePD(7)
 
 foreign portD as $portD(Int, Bool) : Unit
+foreign portDs as $portDs(Int) : Unit

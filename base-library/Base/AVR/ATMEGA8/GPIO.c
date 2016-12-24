@@ -40,6 +40,12 @@ int portB(int port_num, int high_or_low) {
   return 0;
 }
 
+int portBs(int output) {
+  DDRB = 0b11111111;
+  PORTB = output;
+  return 0;
+}
+
 // PC
 
 int pinC(int num) {
@@ -59,6 +65,12 @@ int portC(int port_num, int high_or_low) {
   return 0;
 }
 
+int portCs(int output) {
+  DDRC = 0b11111111;
+  PORTC = output;
+  return 0;
+}
+
 // PD
 
 int pinD(int num) {
@@ -75,5 +87,11 @@ int portD(int port_num, int high_or_low) {
   high_or_low = (high_or_low == 0 ? 0 : 1);
   DDRD |= 1 << port_num;
   PORTD = (~(1 << port_num) & PORTD) | (high_or_low << port_num);
+  return 0;
+}
+
+int portDs(int output) {
+  DDRD = 0b11111111;
+  PORTD = output;
   return 0;
 }
