@@ -16,6 +16,12 @@ snd(pair : (a, b)) : b = y where (_, y) = pair
 infixl <> 0
 op <>(a : Unit, b : Unit) : Unit = Unit
 
+infixl >-> 0
+op >->(x : a, y : b) : b = y
+
+infixl <-< 0
+op <-<(x : a, y : b) : a = x
+
 foreign - as '-(Int) : Int
 foreign + as '+(Int) : Int
 foreign ! as '!(Bool) : Bool
