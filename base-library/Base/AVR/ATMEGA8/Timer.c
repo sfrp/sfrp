@@ -10,14 +10,12 @@ ISR(TIMER0_OVF_vect)
 
 void initialize_timer() {
   static int flag = 0;
-  if (!flag) {
-    flag = 1;
-    return;
-  }
+  if (flag) return;
   cli();
   TIMSK = 0b00000001;
   TCCR0 = 0b00000001; // No prescaling
   sei();
+  flag = 1;
 }
 
 int get_dsec(clk_io_kilohertz) {
