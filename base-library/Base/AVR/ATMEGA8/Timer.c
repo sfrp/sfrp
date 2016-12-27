@@ -30,6 +30,7 @@ int get_dsec(clk_io_kilohertz) {
   return dsec;
 }
 
+// Param clk_io_kilohertz should be a even number.
 int get_dmsec(clk_io_kilohertz) {
   static unsigned int last = 0;
   unsigned int current;
@@ -43,7 +44,8 @@ int get_dmsec(clk_io_kilohertz) {
 }
 
 // This function assumes 0.97656(=1000/1024)msec as 1msec
-// so accumulates about 2% error.
+// so accumulates about 2% numerical error.
+// Argument which is not multiple of 256 also causes numerical error.
 int get_uncertain_dmsec(clk_io_kilohertz) {
   static unsigned int last = 0;
   unsigned int current;
